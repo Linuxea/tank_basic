@@ -123,6 +123,14 @@ public class Tank {
         this.direction = direction;
     }
 
+    public ClientMain getClientMain() {
+        return clientMain;
+    }
+
+    public void setClientMain(ClientMain clientMain) {
+        this.clientMain = clientMain;
+    }
+
     public void draw(Graphics graphics) {
         if (isAlive == false) return;
         Color oldColor = graphics.getColor();
@@ -207,24 +215,26 @@ public class Tank {
     }
 
     void makeLocation() {
-        if (left && up && !right && !down) {
-            direction = Direction.LU;
-        } else if (left && !up && !right && down) {
-            direction = Direction.LD;
-        } else if (right && up && !left && !down) {
-            direction = Direction.RU;
-        } else if (right && !up && !left && down) {
-            direction = Direction.RD;
-        } else if (left) {
-            direction = Direction.L;
-        } else if (right) {
-            direction = Direction.R;
-        } else if (up) {
-            direction = Direction.U;
-        } else if (down) {
-            direction = Direction.D;
-        } else if (!left && !right && !up && !down) {
-            direction = Direction.STOP;
+        if (goodGuy == true) {
+            if (left && up && !right && !down) {
+                direction = Direction.LU;
+            } else if (left && !up && !right && down) {
+                direction = Direction.LD;
+            } else if (right && up && !left && !down) {
+                direction = Direction.RU;
+            } else if (right && !up && !left && down) {
+                direction = Direction.RD;
+            } else if (left) {
+                direction = Direction.L;
+            } else if (right) {
+                direction = Direction.R;
+            } else if (up) {
+                direction = Direction.U;
+            } else if (down) {
+                direction = Direction.D;
+            } else if (!left && !right && !up && !down) {
+                direction = Direction.STOP;
+            }
         }
 
         System.out.println(direction);

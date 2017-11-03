@@ -3,6 +3,7 @@ package com.basictank;
 import lombok.Data;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by Linuxea on 11/3/17.
@@ -59,6 +60,7 @@ public class Missle {
     }
 
     public boolean isAlive() {
+        if (isAlive == false) return false; // 击中坦克的情况下就不必检测是否在视野之外了
         isAlive = getX() >= 0 && getY() >= 0 && getX() <= Screen.WIDTH && getY() <= Screen.HEIGHT;
         return isAlive;
     }
@@ -70,10 +72,20 @@ public class Missle {
     }
 
     public boolean bitTank(Tank tank) {
-        if (tank.isAlive() && buildRect().intersects(tank.buildRect())) {
+        //tank.isAlive() &&
+        if (buildRect().intersects(tank.buildRect())) {
             tank.setAlive(false); // tank disappear
             this.setAlive(false); // missle disappear
+            Explode explode = new Explode(x, y, tank.getClientMain());
+            tank.getClientMain().getExplodes().add(explode);
             return true;
+        }
+        return false;
+    }
+
+    public boolean bitTankList(List<Tank> tankList) {
+        for (int i = 0; i < tankList.size(); i++) {
+            return bitTank(tankList.get(i));
         }
         return false;
     }

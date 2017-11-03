@@ -7,8 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
@@ -20,10 +20,9 @@ public class ClientMain extends Frame {
 
     private Image offScreenImage;
     private Tank myTank = new Tank(50, 50, this, true);
-    private Tank enemyYTank = new Tank(100, 50, this, false);
+    private List<Tank> tankList = new ArrayList<>();
     private Queue<Missle> missleQueue = new LinkedList<Missle>();
-
-    private Explode explode = new Explode(20, 48, this);
+    private Queue<Explode> explodes = new LinkedList<>();
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
@@ -44,32 +43,52 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        myTank.draw(g);
         Iterator<Missle> iterator = missleQueue.iterator();
         while (iterator.hasNext()) {
             Missle temp = iterator.next();
             if (temp.isAlive()) {
-                temp.bitTank(enemyYTank);
+                for (int i = 0; i < tankList.size(); i++) {
+                    temp.bitTank(tankList.get(i));
+                }
                 temp.draw(g);
             } else {
                 iterator.remove();
             }
         }
-        myTank.draw(g);
-        explode.draw(g);
-        if (enemyYTank.isAlive()) {
-            enemyYTank.draw(g);
+
+        Iterator<Tank> tankIterator = tankList.iterator();
+        while (tankIterator.hasNext()) {
+            Tank tank = tankIterator.next();
+            if (tank.isAlive()) {
+                tank.draw(g);
+            } else {
+                tankIterator.remove();
+            }
+        }
+
+
+        Iterator<Explode> explodeIterator = explodes.iterator();
+        while (explodeIterator.hasNext()) {
+            Explode temp = explodeIterator.next();
+            if (temp.isAlive()) {
+                temp.draw(g);
+            } else {
+                explodeIterator.remove();
+            }
         }
     }
 
     private void launch() throws InterruptedException {
         this.init();
+        this.showEnemys();
         while (true) {
             repaint();
-            TimeUnit.MILLISECONDS.sleep(100);
+            TimeUnit.MILLISECONDS.sleep(10);
         }
     }
 
-    private void init(){
+    private void init() {
         super.setLocation(400, 300);
         super.setSize(Screen.WIDTH, Screen.HEIGHT);
         super.setVisible(true);
@@ -86,6 +105,41 @@ public class ClientMain extends Frame {
             }
         });
 
+    }
+
+    public void showEnemys() {
+        for (int i = 0; i < 10; i++) {
+            Tank tank = new Tank(i * 10, i * 40 + 1, this, false);
+            tank.setDirection(Direction.D);
+            new Thread(() -> {
+                while (true) {
+                    if (tank.isAlive() == false) return;
+                    tank.makeLocation();
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(100);
+                        Random random = new Random();
+                        int ok = random.nextInt(4);
+                        switch (ok) {
+                            case 0:
+                                tank.setDirection(Direction.U);
+                                break;
+                            case 1:
+                                tank.setDirection(Direction.D);
+                                break;
+                            case 2:
+                                tank.setDirection(Direction.RU);
+                                break;
+                            case 3:
+                                tank.setDirection(Direction.LD);
+                                break;
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+            tankList.add(tank);
+        }
     }
 
 
