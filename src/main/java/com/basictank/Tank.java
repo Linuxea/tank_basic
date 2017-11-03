@@ -20,6 +20,9 @@ public class Tank {
     private final int SCREEN_WIDTH;
     private final int SCREEN_HEIGHT;
 
+    private final int TANK_WIDTH = 30;
+    private final int TANK_HEIGHT = 30;
+
     private ClientMain clientMain;
 
 
@@ -114,33 +117,33 @@ public class Tank {
     public void draw(Graphics graphics) {
         Color oldColor = graphics.getColor();
         graphics.setColor(Color.red);
-        graphics.fillOval(getX(), getY(), 30, 30);
+        graphics.fillOval(getX(), getY(), TANK_WIDTH, TANK_HEIGHT);
         graphics.setColor(oldColor);
 
         switch (ptDirection) {
             case L:
-                graphics.drawLine(getX(), getY(), getX() - 10, getY());
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX(), getY() + TANK_HEIGHT / 2);
                 break;
             case R:
-                graphics.drawLine(getX(), getY(), getX() + 10, getY());
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX() + TANK_WIDTH / 2, getY());
                 break;
             case U:
-                graphics.drawLine(getX(), getY(), getX(), getY() - 5);
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX(), getY() - 5);
                 break;
             case D:
-                graphics.drawLine(getX(), getY(), getX(), getY() + 5);
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX(), getY() + 5);
                 break;
             case LD:
-                graphics.drawLine(getX(), getY(), getX() - 10, getY() + 5);
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX() - 10, getY() + 5);
                 break;
             case LU:
-                graphics.drawLine(getX(), getY(), getX() - 10, getY() + 5);
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX() - 10, getY() + 5);
                 break;
             case RD:
-                graphics.drawLine(getX(), getY(), getX() + 10, getY() + 5);
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX() + 10, getY() + 5);
                 break;
             case RU:
-                graphics.drawLine(getX(), getY(), getX() + 10, getY() - 5);
+                graphics.drawLine(getX() + TANK_WIDTH / 2, getY() + TANK_HEIGHT / 2, getX() + 10, getY() - 5);
                 break;
             case STOP:
                 break;
@@ -280,6 +283,6 @@ public class Tank {
      * @return
      */
     public Missle fire() {
-        return new Missle(this.getX(), this.getY(), this.getDirection());
+        return new Missle(this.getX(), this.getY(), this.ptDirection);
     }
 }
