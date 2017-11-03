@@ -14,6 +14,20 @@ public class ClientMain extends Frame {
     private static int TANK_OFFSET_X = 0;
     private static int TANK_OFFSET_Y = 0;
 
+    private Image offScreenImage;
+
+    @Override
+    public void update(Graphics g) { // repaint : update -> paint
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(800, 600);
+        }
+
+        Graphics graphics = offScreenImage.getGraphics(); // off graphics
+        paint(graphics);
+        g.drawImage(offScreenImage, 0, 0, null);
+        offScreenImage = null;
+    }
+
     @Override
     public void paint(Graphics g) {
         Color oldColor = g.getColor();
