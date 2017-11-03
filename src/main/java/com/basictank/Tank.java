@@ -13,9 +13,13 @@ public class Tank {
     private int y;
     private int moveStep;
     private boolean goodGuy;
+    private Direction direction = Direction.R;
 
     private final int SCREEN_WIDTH;
     private final int SCREEN_HEIGHT;
+
+    private ClientMain clientMain;
+
 
     public void moveLeft() {
         this.x -= moveStep;
@@ -43,6 +47,15 @@ public class Tank {
         this.y = y;
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.SCREEN_HEIGHT = SCREEN_HEIGHT;
+        this.moveStep = 5;
+    }
+
+    public Tank(int x, int y, int SCREEN_WIDTH, int SCREEN_HEIGHT, ClientMain clientMain) {
+        this.x = x;
+        this.y = y;
+        this.SCREEN_WIDTH = SCREEN_WIDTH;
+        this.SCREEN_HEIGHT = SCREEN_HEIGHT;
+        this.clientMain = clientMain;
         this.moveStep = 5;
     }
 
@@ -88,6 +101,14 @@ public class Tank {
         this.goodGuy = goodGuy;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
     public void draw(Graphics graphics) {
         Color oldColor = graphics.getColor();
         graphics.setColor(Color.red);
@@ -129,12 +150,14 @@ public class Tank {
             case KeyEvent.VK_DOWN:
                 down = true;
                 break;
+            case KeyEvent.VK_CONTROL:
+                this.clientMain.setMissle(fire());
+                break;
         }
         makeLocation();
     }
 
     void makeLocation() {
-        Direction direction = null;
         if (left && up && !right && !down) {
             direction = Direction.LU;
         } else if (left && !up && !right && down) {
@@ -215,5 +238,14 @@ public class Tank {
                 down = false;
                 break;
         }
+    }
+
+    /**
+     * open fire
+     *
+     * @return
+     */
+    public Missle fire() {
+        return new Missle(this.getX(), this.getY(), this.getDirection());
     }
 }

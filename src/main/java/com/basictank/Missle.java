@@ -15,7 +15,7 @@ public class Missle {
     private Direction direction;
     private int x;
     private int y;
-    private int moveStep = 5;
+    private int moveStep = 1;
 
 
     public Missle(int x, int y, Direction direction) {
@@ -47,6 +47,9 @@ public class Missle {
                 break;
             case D:
                 moveDown();
+                break;
+            case STOP:
+                moveRight();
                 break;
         }
 

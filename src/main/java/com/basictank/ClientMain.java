@@ -1,5 +1,7 @@
 package com.basictank;
 
+import lombok.Data;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,14 +12,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Linuxea on 11/3/17.
  */
-
+@Data
 public class ClientMain extends Frame {
 
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
     private Image offScreenImage;
-    private Tank myTank = new Tank(30, 20, 800, 600);
-    private Missle missle = new Missle(30, 50, Direction.R);
+    private Tank myTank = new Tank(50, 50, 800, 600, this);
+    private Missle missle;
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
@@ -38,7 +40,9 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        missle.draw(g);
+        if (null != missle) {
+            missle.draw(g);
+        }
         myTank.draw(g);
     }
 
