@@ -19,12 +19,14 @@ public class Missle {
     private int HEIGHT = 10;
     private int moveStep = 1;
     private boolean isAlive = true;
+    private boolean good;
 
 
-    public Missle(int x, int y, Direction direction) {
+    public Missle(int x, int y, boolean good, Direction direction) {
         this.direction = direction;
         this.x = x;
         this.y = y;
+        this.good = good;
     }
 
     public void draw(Graphics graphics) {
@@ -73,7 +75,7 @@ public class Missle {
 
     public boolean bitTank(Tank tank) {
         //tank.isAlive() &&
-        if (buildRect().intersects(tank.buildRect())) {
+        if (this.good != tank.isGoodGuy() && buildRect().intersects(tank.buildRect())) {
             tank.setAlive(false); // tank disappear
             this.setAlive(false); // missle disappear
             Explode explode = new Explode(x, y, tank.getClientMain());

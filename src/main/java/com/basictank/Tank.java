@@ -242,6 +242,7 @@ public class Tank {
                 direction = Direction.STOP;
             }
         } else {
+//            this.clientMain.getMissleQueue().offer(fire());
             if (currentStep-- <= 0) {
                 Random random = new Random();
                 if (currentStep == 0) {
@@ -329,7 +330,7 @@ public class Tank {
      * @return
      */
     public Missle fire() {
-        return new Missle(this.getX(), this.getY(), this.ptDirection);
+        return new Missle(this.getX(), this.getY(), this.goodGuy, this.ptDirection);
     }
 
     public Rectangle buildRect() {

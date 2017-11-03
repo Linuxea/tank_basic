@@ -99,7 +99,7 @@ public class ClientMain extends Frame {
         super.setResizable(false);
         super.setTitle("tank basic version");
         super.setAlwaysOnTop(true);
-        super.setBackground(Color.green);
+        super.setBackground(Color.white);
         super.addKeyListener(new KeyListener());
         super.addWindowListener(new WindowAdapter() {
             @Override
@@ -117,10 +117,10 @@ public class ClientMain extends Frame {
             Tank tank = new Tank(i * 10, i * 40 + 1, this, false);
             tank.setDirection(Direction.D);
             tankList.add(tank);
+            tank.makeLocation(); // 这个设计得非常有问题有空再.
             executorService.execute(() -> {
                 while (true) {
                     if (tank.isAlive() == false) return;
-                    tank.makeLocation(); // 这个设计得非常有问题有空再.
                     try {
                         TimeUnit.MILLISECONDS.sleep(50);
                     } catch (InterruptedException e) {
