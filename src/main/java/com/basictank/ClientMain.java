@@ -16,7 +16,7 @@ public class ClientMain extends Frame {
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
     private Image offScreenImage;
-    private Tank myTank = new Tank(30, 20, 5);
+    private Tank myTank = new Tank(30, 20, 800, 600);
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
@@ -67,9 +67,6 @@ public class ClientMain extends Frame {
 
     }
 
-    private void rangeCheck() {
-    }
-
 
     /**
      * key listener
@@ -78,6 +75,11 @@ public class ClientMain extends Frame {
         @Override
         public void keyPressed(KeyEvent e) {
             myTank.move(e);
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            myTank.keyRelease(e);
         }
     }
 
