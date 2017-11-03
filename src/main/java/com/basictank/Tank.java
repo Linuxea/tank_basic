@@ -249,7 +249,13 @@ public class Tank {
         if (this.direction != Direction.STOP) {
             this.ptDirection = direction;
         }
+
+        if (x < 0) x = 0;
+        if (y < 30) y = 30;
+        if (x + TANK_WIDTH > Screen.WIDTH) x = Screen.WIDTH - TANK_WIDTH;
+        if (y + TANK_HEIGHT > Screen.HEIGHT) y = Screen.HEIGHT - TANK_HEIGHT;
     }
+
 
     public void keyRelease(KeyEvent e) {
         switch (e.getKeyCode()) {

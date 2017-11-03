@@ -41,7 +41,6 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        System.out.println(missleQueue.size());
         Iterator<Missle> iterator = missleQueue.iterator();
         while (iterator.hasNext()) {
             Missle temp = iterator.next();
