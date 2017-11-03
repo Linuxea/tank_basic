@@ -18,9 +18,9 @@ import java.util.Queue;
 public class ClientMain extends Frame {
 
     private Image offScreenImage;
-    private Tank myTank = new Tank(50, 50, 800, 600, this);
+    private Tank myTank = new Tank(50, 50, this);
 
-    private Queue<Missle> missles = new LinkedList<Missle>();
+    private Queue<Missle> missleQueue = new LinkedList<Missle>();
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
@@ -41,8 +41,8 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        System.out.println(missles.size());
-        Iterator<Missle> iterator = missles.iterator();
+        System.out.println(missleQueue.size());
+        Iterator<Missle> iterator = missleQueue.iterator();
         while (iterator.hasNext()) {
             Missle temp = iterator.next();
             if (temp.isAlive()) {

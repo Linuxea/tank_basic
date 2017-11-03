@@ -17,9 +17,6 @@ public class Tank {
 
     private Direction ptDirection = Direction.D;
 
-    private final int SCREEN_WIDTH;
-    private final int SCREEN_HEIGHT;
-
     private final int TANK_WIDTH = 30;
     private final int TANK_HEIGHT = 30;
 
@@ -47,28 +44,22 @@ public class Tank {
     boolean up;
     boolean down;
 
-    public Tank(int x, int y, int SCREEN_WIDTH, int SCREEN_HEIGHT) {
+    public Tank(int x, int y) {
         this.x = x;
         this.y = y;
-        this.SCREEN_WIDTH = SCREEN_WIDTH;
-        this.SCREEN_HEIGHT = SCREEN_HEIGHT;
         this.moveStep = 5;
     }
 
-    public Tank(int x, int y, int SCREEN_WIDTH, int SCREEN_HEIGHT, ClientMain clientMain) {
+    public Tank(int x, int y, ClientMain clientMain) {
         this.x = x;
         this.y = y;
-        this.SCREEN_WIDTH = SCREEN_WIDTH;
-        this.SCREEN_HEIGHT = SCREEN_HEIGHT;
         this.clientMain = clientMain;
         this.moveStep = 5;
     }
 
-    public Tank(int x, int y, int SCREEN_WIDTH, int SCREEN_HEIGHT, int moveStep) {
+    public Tank(int x, int y, int moveStep) {
         this.x = x;
         this.y = y;
-        this.SCREEN_WIDTH = SCREEN_WIDTH;
-        this.SCREEN_HEIGHT = SCREEN_HEIGHT;
         this.moveStep = moveStep;
     }
 
@@ -185,7 +176,7 @@ public class Tank {
                 down = true;
                 break;
             case KeyEvent.VK_CONTROL:
-                this.clientMain.getMissles().offer(fire());
+                this.clientMain.getMissleQueue().offer(fire());
                 break;
         }
         makeLocation();
