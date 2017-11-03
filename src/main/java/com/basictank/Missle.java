@@ -55,6 +55,10 @@ public class Missle {
 
     }
 
+    public boolean isAlive() {
+        return getX() >= 0 && getY() >= 0 && getX() <= Screen.WIDTH && getY() <= Screen.HEIGHT;
+    }
+
 
     public void moveLeft() {
         this.x -= moveStep;

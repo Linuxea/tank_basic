@@ -7,9 +7,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Linuxea on 11/3/17.
@@ -17,11 +17,8 @@ import java.util.concurrent.TimeUnit;
 @Data
 public class ClientMain extends Frame {
 
-    private static final int SCREEN_WIDTH = 800;
-    private static final int SCREEN_HEIGHT = 600;
     private Image offScreenImage;
     private Tank myTank = new Tank(50, 50, 800, 600, this);
-    private Missle missle;
 
     private Queue<Missle> missles = new LinkedList<Missle>();
 
@@ -33,7 +30,7 @@ public class ClientMain extends Frame {
     @Override
     public void update(Graphics g) { // repaint : update -> paint
         if (offScreenImage == null) {
-            offScreenImage = this.createImage(SCREEN_WIDTH, SCREEN_HEIGHT);
+            offScreenImage = this.createImage(Screen.WIDTH, Screen.HEIGHT);
         }
 
         Graphics graphics = offScreenImage.getGraphics(); // off graphics
@@ -44,26 +41,29 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        if (null != missles && missles.size() >= 0) {
-            for (Missle temp : missles) {
+        System.out.println(missles.size());
+        Iterator<Missle> iterator = missles.iterator();
+        while (iterator.hasNext()) {
+            Missle temp = iterator.next();
+            if (temp.isAlive()) {
                 temp.draw(g);
+            } else {
+                iterator.remove();
             }
-//            missle.draw(g);
         }
         myTank.draw(g);
     }
 
-    private void launch() throws InterruptedException {
+    private void launch() {
         this.init();
         while (true) {
             repaint();
-            TimeUnit.MILLISECONDS.sleep(5);
         }
     }
 
     private void init(){
         super.setLocation(400, 300);
-        super.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        super.setSize(Screen.WIDTH, Screen.HEIGHT);
         super.setVisible(true);
         super.setResizable(false);
         super.setTitle("tank basic version");
