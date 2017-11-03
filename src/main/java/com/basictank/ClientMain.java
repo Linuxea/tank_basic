@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Linuxea on 11/3/17.
@@ -20,8 +21,9 @@ public class ClientMain extends Frame {
     private Image offScreenImage;
     private Tank myTank = new Tank(50, 50, this, true);
     private Tank enemyYTank = new Tank(100, 50, this, false);
-
     private Queue<Missle> missleQueue = new LinkedList<Missle>();
+
+    private Explode explode = new Explode(20, 48, this);
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
@@ -53,15 +55,17 @@ public class ClientMain extends Frame {
             }
         }
         myTank.draw(g);
+        explode.draw(g);
         if (enemyYTank.isAlive()) {
             enemyYTank.draw(g);
         }
     }
 
-    private void launch() {
+    private void launch() throws InterruptedException {
         this.init();
         while (true) {
             repaint();
+            TimeUnit.MILLISECONDS.sleep(100);
         }
     }
 
