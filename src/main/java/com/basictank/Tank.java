@@ -13,9 +13,9 @@ public class Tank {
     private int y;
     private int moveStep;
     private boolean goodGuy;
-    private Direction direction = Direction.R;
+    private Direction direction = Direction.STOP;
 
-    private Direction beforeStopDirection;
+    private Direction ptDirection = Direction.D;
 
     private final int SCREEN_WIDTH;
     private final int SCREEN_HEIGHT;
@@ -116,6 +116,35 @@ public class Tank {
         graphics.setColor(Color.red);
         graphics.fillOval(getX(), getY(), 30, 30);
         graphics.setColor(oldColor);
+
+        switch (ptDirection) {
+            case L:
+                graphics.drawLine(getX(), getY(), getX() - 10, getY());
+                break;
+            case R:
+                graphics.drawLine(getX(), getY(), getX() + 10, getY());
+                break;
+            case U:
+                graphics.drawLine(getX(), getY(), getX(), getY() - 5);
+                break;
+            case D:
+                graphics.drawLine(getX(), getY(), getX(), getY() + 5);
+                break;
+            case LD:
+                graphics.drawLine(getX(), getY(), getX() - 10, getY() + 5);
+                break;
+            case LU:
+                graphics.drawLine(getX(), getY(), getX() - 10, getY() + 5);
+                break;
+            case RD:
+                graphics.drawLine(getX(), getY(), getX() + 10, getY() + 5);
+                break;
+            case RU:
+                graphics.drawLine(getX(), getY(), getX() + 10, getY() - 5);
+                break;
+            case STOP:
+                break;
+        }
     }
 
     public void moveLeftUp() {
@@ -223,6 +252,9 @@ public class Tank {
                 break;
         }
 
+        if (this.direction != Direction.STOP) {
+            this.ptDirection = direction;
+        }
     }
 
     public void keyRelease(KeyEvent e) {
