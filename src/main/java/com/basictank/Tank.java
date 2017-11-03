@@ -15,6 +15,8 @@ public class Tank {
     private boolean goodGuy;
     private Direction direction = Direction.R;
 
+    private Direction beforeStopDirection;
+
     private final int SCREEN_WIDTH;
     private final int SCREEN_HEIGHT;
 
@@ -151,7 +153,7 @@ public class Tank {
                 down = true;
                 break;
             case KeyEvent.VK_CONTROL:
-                this.clientMain.setMissle(fire());
+                this.clientMain.getMissles().offer(fire());
                 break;
         }
         makeLocation();

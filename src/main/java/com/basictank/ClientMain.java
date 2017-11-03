@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,6 +22,8 @@ public class ClientMain extends Frame {
     private Image offScreenImage;
     private Tank myTank = new Tank(50, 50, 800, 600, this);
     private Missle missle;
+
+    private Queue<Missle> missles = new LinkedList<Missle>();
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
@@ -40,8 +44,11 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        if (null != missle) {
-            missle.draw(g);
+        if (null != missles && missles.size() >= 0) {
+            for (Missle temp : missles) {
+                temp.draw(g);
+            }
+//            missle.draw(g);
         }
         myTank.draw(g);
     }

@@ -10,6 +10,10 @@ public enum Direction {
     int code;
     String desc;
 
+    Direction(int code) {
+        this.code = code;
+    }
+
     Direction(int code, String desc) {
         this.code = code;
         this.desc = desc;
