@@ -10,6 +10,8 @@ import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,6 +19,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Data
 public class ClientMain extends Frame {
+
+    ExecutorService executorService = Executors.newCachedThreadPool();
 
     private Image offScreenImage;
     private Tank myTank = new Tank(50, 50, this, true);
@@ -100,7 +104,7 @@ public class ClientMain extends Frame {
         super.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
+                executorService.shutdown();
                 System.exit(0);
             }
         });
@@ -108,37 +112,22 @@ public class ClientMain extends Frame {
     }
 
     public void showEnemys() {
+
         for (int i = 0; i < 10; i++) {
             Tank tank = new Tank(i * 10, i * 40 + 1, this, false);
             tank.setDirection(Direction.D);
-            new Thread(() -> {
+            tankList.add(tank);
+            executorService.execute(() -> {
                 while (true) {
                     if (tank.isAlive() == false) return;
-                    tank.makeLocation();
+                    tank.makeLocation(); // 这个设计得非常有问题有空再.
                     try {
-                        TimeUnit.MILLISECONDS.sleep(100);
-                        Random random = new Random();
-                        int ok = random.nextInt(4);
-                        switch (ok) {
-                            case 0:
-                                tank.setDirection(Direction.U);
-                                break;
-                            case 1:
-                                tank.setDirection(Direction.D);
-                                break;
-                            case 2:
-                                tank.setDirection(Direction.RU);
-                                break;
-                            case 3:
-                                tank.setDirection(Direction.LD);
-                                break;
-                        }
+                        TimeUnit.MILLISECONDS.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-            }).start();
-            tankList.add(tank);
+            });
         }
     }
 

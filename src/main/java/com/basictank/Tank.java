@@ -2,6 +2,7 @@ package com.basictank;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 /**
  * Created by Linuxea on 11/3/17.
@@ -11,16 +12,15 @@ public class Tank {
 
     private int x;
     private int y;
-    private int moveStep;
+    private int MOVE_STEP = 10;
     private boolean goodGuy;
-
+    private int currentStep;
     private boolean isAlive = true;
 
     public Tank(int x, int y, ClientMain clientMain, boolean goodGuy) {
         this.x = x;
         this.y = y;
         this.clientMain = clientMain;
-        this.moveStep = 5;
         this.goodGuy = goodGuy;
     }
 
@@ -37,20 +37,22 @@ public class Tank {
     private ClientMain clientMain;
 
 
+    public Tank(int x, int y, int MOVE_STEP) {
+        this.x = x;
+        this.y = y;
+        this.MOVE_STEP = MOVE_STEP;
+    }
+
     public void moveLeft() {
-        this.x -= moveStep;
+        this.x -= MOVE_STEP;
     }
 
     public void moveRight() {
-        this.x += moveStep;
+        this.x += MOVE_STEP;
     }
 
     public void moveUp() {
-        this.y -= moveStep;
-    }
-
-    public void moveDown() {
-        this.y += moveStep;
+        this.y -= MOVE_STEP;
     }
 
     boolean left;
@@ -61,24 +63,20 @@ public class Tank {
     public Tank(int x, int y) {
         this.x = x;
         this.y = y;
-        this.moveStep = 5;
     }
 
     public Tank(int x, int y, ClientMain clientMain) {
         this.x = x;
         this.y = y;
         this.clientMain = clientMain;
-        this.moveStep = 5;
     }
 
     public void setAlive(boolean alive) {
         isAlive = alive;
     }
 
-    public Tank(int x, int y, int moveStep) {
-        this.x = x;
-        this.y = y;
-        this.moveStep = moveStep;
+    public void moveDown() {
+        this.y += MOVE_STEP;
     }
 
 
@@ -99,12 +97,12 @@ public class Tank {
         this.y = y;
     }
 
-    public int getMoveStep() {
-        return moveStep;
+    public int getMOVE_STEP() {
+        return MOVE_STEP;
     }
 
-    public void setMoveStep(int moveStep) {
-        this.moveStep = moveStep;
+    public void setMOVE_STEP(int MOVE_STEP) {
+        this.MOVE_STEP = MOVE_STEP;
     }
 
     public boolean isGoodGuy() {
@@ -129,6 +127,14 @@ public class Tank {
 
     public void setClientMain(ClientMain clientMain) {
         this.clientMain = clientMain;
+    }
+
+    public int getCurrentStep() {
+        return currentStep;
+    }
+
+    public void setCurrentStep(int currentStep) {
+        this.currentStep = currentStep;
     }
 
     public void draw(Graphics graphics) {
@@ -174,23 +180,23 @@ public class Tank {
     }
 
     public void moveLeftUp() {
-        this.x -= moveStep;
-        this.y -= moveStep;
+        this.x -= MOVE_STEP;
+        this.y -= MOVE_STEP;
     }
 
     public void moveLeftDown() {
-        this.x -= moveStep;
-        this.y += moveStep;
+        this.x -= MOVE_STEP;
+        this.y += MOVE_STEP;
     }
 
     public void moveRightUp() {
-        this.x += moveStep;
-        this.y -= moveStep;
+        this.x += MOVE_STEP;
+        this.y -= MOVE_STEP;
     }
 
     public void moveRightDown() {
-        this.x += moveStep;
-        this.y += moveStep;
+        this.x += MOVE_STEP;
+        this.y += MOVE_STEP;
     }
 
     public void move(KeyEvent e) {
@@ -214,7 +220,7 @@ public class Tank {
         makeLocation();
     }
 
-    void makeLocation() {
+    public void makeLocation() {
         if (goodGuy == true) {
             if (left && up && !right && !down) {
                 direction = Direction.LU;
@@ -235,8 +241,17 @@ public class Tank {
             } else if (!left && !right && !up && !down) {
                 direction = Direction.STOP;
             }
+        } else {
+            if (currentStep-- <= 0) {
+                Random random = new Random();
+                if (currentStep == 0) {
+                    currentStep = random.nextInt(12) + 1;
+                }
+                Direction[] directions = Direction.values();
+                int r = random.nextInt(directions.length);
+                direction = directions[r];
+            }
         }
-
         System.out.println(direction);
 
         switch (direction) {
