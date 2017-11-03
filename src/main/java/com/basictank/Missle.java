@@ -11,11 +11,13 @@ import java.awt.*;
 public class Missle {
 
     private Color color;
-    private Shape shape;
     private Direction direction;
     private int x;
     private int y;
+    private int WIDTH = 10;
+    private int HEIGHT = 10;
     private int moveStep = 1;
+    private boolean isAlive = true;
 
 
     public Missle(int x, int y, Direction direction) {
@@ -25,16 +27,17 @@ public class Missle {
     }
 
     public void draw(Graphics graphics) {
+        if (isAlive == false) return;
         Color oldColor = graphics.getColor();
         Color color = Color.black;
         graphics.setColor(color);
-        graphics.fillOval(x, y, 10, 10);
+        graphics.fillOval(x, y, WIDTH, HEIGHT);
         graphics.setColor(oldColor);
 
         move();
     }
 
-    void move() {
+    public void move() {
         switch (direction) {
             case L:
                 moveLeft();
@@ -56,7 +59,23 @@ public class Missle {
     }
 
     public boolean isAlive() {
-        return getX() >= 0 && getY() >= 0 && getX() <= Screen.WIDTH && getY() <= Screen.HEIGHT;
+        isAlive = getX() >= 0 && getY() >= 0 && getX() <= Screen.WIDTH && getY() <= Screen.HEIGHT;
+        return isAlive;
+    }
+
+    // 碰撞检测
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public boolean bitTank(Tank tank) {
+        if (tank.isAlive() && buildRect().intersects(tank.buildRect())) {
+            tank.setAlive(false); // tank disappear
+            this.setAlive(false); // missle disappear
+            return true;
+        }
+        return false;
     }
 
 
@@ -76,5 +95,7 @@ public class Missle {
         this.y += moveStep;
     }
 
-
+    public Rectangle buildRect() {
+        return new Rectangle(getX(), getY(), WIDTH, HEIGHT);
+    }
 }

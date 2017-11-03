@@ -13,6 +13,20 @@ public class Tank {
     private int y;
     private int moveStep;
     private boolean goodGuy;
+
+    private boolean isAlive = true;
+
+    public Tank(int x, int y, ClientMain clientMain, boolean goodGuy) {
+        this.x = x;
+        this.y = y;
+        this.clientMain = clientMain;
+        this.moveStep = 5;
+        this.goodGuy = goodGuy;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
     private Direction direction = Direction.STOP;
 
     private Direction ptDirection = Direction.D;
@@ -55,6 +69,10 @@ public class Tank {
         this.y = y;
         this.clientMain = clientMain;
         this.moveStep = 5;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     public Tank(int x, int y, int moveStep) {
@@ -106,8 +124,14 @@ public class Tank {
     }
 
     public void draw(Graphics graphics) {
+        if (isAlive == false) return;
         Color oldColor = graphics.getColor();
-        graphics.setColor(Color.red);
+        if (goodGuy) {
+            graphics.setColor(Color.red);
+        } else {
+            graphics.setColor(Color.black);
+        }
+
         graphics.fillOval(getX(), getY(), TANK_WIDTH, TANK_HEIGHT);
         graphics.setColor(oldColor);
 
@@ -251,7 +275,7 @@ public class Tank {
         }
 
         if (x < 0) x = 0;
-        if (y < 30) y = 30;
+        if (y < TANK_WIDTH) y = TANK_WIDTH;
         if (x + TANK_WIDTH > Screen.WIDTH) x = Screen.WIDTH - TANK_WIDTH;
         if (y + TANK_HEIGHT > Screen.HEIGHT) y = Screen.HEIGHT - TANK_HEIGHT;
     }
@@ -281,5 +305,9 @@ public class Tank {
      */
     public Missle fire() {
         return new Missle(this.getX(), this.getY(), this.ptDirection);
+    }
+
+    public Rectangle buildRect() {
+        return new Rectangle(getX(), getY(), TANK_WIDTH, TANK_HEIGHT);
     }
 }

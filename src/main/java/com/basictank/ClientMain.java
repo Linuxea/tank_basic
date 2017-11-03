@@ -18,7 +18,8 @@ import java.util.Queue;
 public class ClientMain extends Frame {
 
     private Image offScreenImage;
-    private Tank myTank = new Tank(50, 50, this);
+    private Tank myTank = new Tank(50, 50, this, true);
+    private Tank enemyYTank = new Tank(100, 50, this, false);
 
     private Queue<Missle> missleQueue = new LinkedList<Missle>();
 
@@ -45,12 +46,16 @@ public class ClientMain extends Frame {
         while (iterator.hasNext()) {
             Missle temp = iterator.next();
             if (temp.isAlive()) {
+                temp.bitTank(enemyYTank);
                 temp.draw(g);
             } else {
                 iterator.remove();
             }
         }
         myTank.draw(g);
+        if (enemyYTank.isAlive()) {
+            enemyYTank.draw(g);
+        }
     }
 
     private void launch() {
