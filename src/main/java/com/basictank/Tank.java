@@ -16,8 +16,6 @@ public class Tank {
 
     private final int SCREEN_WIDTH;
     private final int SCREEN_HEIGHT;
-    boolean left;
-    boolean right;
 
     public void moveLeft() {
         this.x -= moveStep;
@@ -35,6 +33,8 @@ public class Tank {
         this.y += moveStep;
     }
 
+    boolean left;
+    boolean right;
     boolean up;
     boolean down;
 

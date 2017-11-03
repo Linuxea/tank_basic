@@ -17,6 +17,7 @@ public class ClientMain extends Frame {
     private static final int SCREEN_HEIGHT = 600;
     private Image offScreenImage;
     private Tank myTank = new Tank(30, 20, 800, 600);
+    private Missle missle = new Missle(30, 50, Direction.R);
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
@@ -37,6 +38,7 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        missle.draw(g);
         myTank.draw(g);
     }
 
