@@ -1,6 +1,7 @@
 package com.basictank;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by Linuxea on 11/3/17.
@@ -77,5 +78,22 @@ public class Tank {
         graphics.setColor(Color.red);
         graphics.fillOval(getX(), getY(), 30, 30);
         graphics.setColor(oldColor);
+    }
+
+    public void move(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_RIGHT:
+                moveRight();
+                break;
+            case KeyEvent.VK_LEFT:
+                moveLeft();
+                break;
+            case KeyEvent.VK_UP:
+                moveUp();
+                break;
+            case KeyEvent.VK_DOWN:
+                moveDown();
+                break;
+        }
     }
 }

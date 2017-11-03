@@ -15,26 +15,12 @@ public class ClientMain extends Frame {
 
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
-
-    private static int TANK_WIDTH = 30;
-    private static int TANK_HEIGHT = 30;
-
-    private static int TANK_OFFSET_X = 0;
-    private static int TANK_OFFSET_Y = 0;
-
     private Image offScreenImage;
-
     private Tank myTank = new Tank(30, 20, 5);
 
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
         main.launch();
-
-        while (true) {
-            main.repaint();
-            TimeUnit.MILLISECONDS.sleep(5);
-        }
-
     }
 
     @Override
@@ -54,8 +40,12 @@ public class ClientMain extends Frame {
         myTank.draw(g);
     }
 
-    private void launch() {
+    private void launch() throws InterruptedException {
         this.init();
+        while (true) {
+            repaint();
+            TimeUnit.MILLISECONDS.sleep(5);
+        }
     }
 
     private void init(){
@@ -87,21 +77,7 @@ public class ClientMain extends Frame {
     private class KeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_RIGHT:
-                    myTank.moveRight();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    myTank.moveLeft();
-                    break;
-                case KeyEvent.VK_UP:
-                    myTank.moveUp();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    myTank.moveDown();
-                    break;
-            }
-
+            myTank.move(e);
         }
     }
 
