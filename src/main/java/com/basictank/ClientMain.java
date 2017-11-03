@@ -1,6 +1,8 @@
 package com.basictank;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.TimeUnit;
@@ -14,9 +16,6 @@ public class ClientMain extends Frame {
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
 
-    private static final int TANK_START_X = 50;
-    private static final int TANK_START_Y = 50;
-
     private static int TANK_WIDTH = 30;
     private static int TANK_HEIGHT = 30;
 
@@ -25,13 +24,15 @@ public class ClientMain extends Frame {
 
     private Image offScreenImage;
 
+    private Tank myTank = new Tank(30, 20, 5);
+
     public static void main(String[] args) throws InterruptedException {
         ClientMain main = new ClientMain();
         main.launch();
 
         while (true) {
             main.repaint();
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.MILLISECONDS.sleep(5);
         }
 
     }
@@ -50,17 +51,7 @@ public class ClientMain extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        Color oldColor = g.getColor();
-        g.setColor(Color.red);
-        g.fillOval(TANK_START_X + TANK_OFFSET_X, TANK_START_Y + TANK_OFFSET_Y, TANK_WIDTH, TANK_HEIGHT);
-        g.setColor(oldColor);
-
-        this.move();
-    }
-
-    private void move() {
-        ClientMain.TANK_OFFSET_X += 10;
-        ClientMain.TANK_OFFSET_Y += 30;
+        myTank.draw(g);
     }
 
     private void launch() {
@@ -75,6 +66,7 @@ public class ClientMain extends Frame {
         super.setTitle("tank basic version");
         super.setAlwaysOnTop(true);
         super.setBackground(Color.green);
+        super.addKeyListener(new KeyListener());
         super.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -83,6 +75,34 @@ public class ClientMain extends Frame {
             }
         });
 
+    }
+
+    private void rangeCheck() {
+    }
+
+
+    /**
+     * key listener
+     */
+    private class KeyListener extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_RIGHT:
+                    myTank.moveRight();
+                    break;
+                case KeyEvent.VK_LEFT:
+                    myTank.moveLeft();
+                    break;
+                case KeyEvent.VK_UP:
+                    myTank.moveUp();
+                    break;
+                case KeyEvent.VK_DOWN:
+                    myTank.moveDown();
+                    break;
+            }
+
+        }
     }
 
 }
